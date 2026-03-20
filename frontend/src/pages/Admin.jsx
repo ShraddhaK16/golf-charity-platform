@@ -22,12 +22,12 @@ const Admin = () => {
 
   const fetchData = async () => {
     try {
-      const drawsRes = await axios.get('http://localhost:5000/api/draws');
+      const drawsRes = await axios.get($);
       setDraws(drawsRes.data);
     } catch (e) { console.error('Failed to load draws'); }
 
     try {
-      const charRes = await axios.get('http://localhost:5000/api/charity');
+      const charRes = await axios.get($);
       setCharities(charRes.data);
     } catch (e) { console.error('Failed to load charities'); }
   };
@@ -35,7 +35,7 @@ const Admin = () => {
   const handleRunDraw = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/draws/run', { prize: prizeName }, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.post($, { prize: prizeName }, { headers: { Authorization: `Bearer ${token}` } });
       alert(`Draw successful! Winner: ${res.data.draw.winner.name}`);
       setPrizeName('');
       fetchData();
@@ -79,7 +79,7 @@ const Admin = () => {
           <h3 className="mb-4">Charity Contributions</h3>
           {charities.length === 0 ? (
             <button onClick={async () => {
-              await axios.post('http://localhost:5000/api/charity/seed');
+              await axios.post($);
               fetchData();
             }} className="btn btn-secondary mt-2">Seed Initial Charities</button>
           ) : (

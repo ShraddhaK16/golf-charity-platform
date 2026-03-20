@@ -33,17 +33,17 @@ const Dashboard = () => {
 
   const fetchData = async (t) => {
     try {
-      const subRes = await axios.get('http://localhost:5000/api/subscriptions/me', { headers: { Authorization: `Bearer ${t}` } });
+      const subRes = await axios.get($, { headers: { Authorization: `Bearer ${t}` } });
       setSubscription(subRes.data);
     } catch (e) { console.log('No subscription yet'); }
 
     try {
-      const scoreRes = await axios.get('http://localhost:5000/api/scores', { headers: { Authorization: `Bearer ${t}` } });
+      const scoreRes = await axios.get($, { headers: { Authorization: `Bearer ${t}` } });
       setScores(scoreRes.data);
     } catch (e) { console.error('Failed to load scores'); }
 
     try {
-      const charityRes = await axios.get('http://localhost:5000/api/charity');
+      const charityRes = await axios.get($);
       setCharities(charityRes.data);
     } catch (e) { console.error('Failed to load charities'); }
   };
@@ -51,7 +51,7 @@ const Dashboard = () => {
   const handleSubscribe = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/subscriptions/subscribe', { plan, charityId }, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.post($, { plan, charityId }, { headers: { Authorization: `Bearer ${token}` } });
       fetchData(token);
     } catch (error) {
       alert(error.response?.data?.error || 'Subscription failed');
@@ -61,7 +61,7 @@ const Dashboard = () => {
   const handleSubmitScore = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/scores', { courseName, date, score: Number(scoreVal) }, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.post($, { courseName, date, score: Number(scoreVal) }, { headers: { Authorization: `Bearer ${token}` } });
       setCourseName(''); setDate(''); setScoreVal('');
       fetchData(token);
     } catch (error) {
