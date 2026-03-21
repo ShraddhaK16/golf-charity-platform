@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BASE_URL from "../api";
 import axios from 'axios';
 
 const Admin = () => {
@@ -22,12 +23,12 @@ const Admin = () => {
 
   const fetchData = async () => {
     try {
-      const drawsRes = await axios.get($);
+      const drawsRes = await axios.get(`${BASE_URL}/api/draws`);
       setDraws(drawsRes.data);
     } catch (e) { console.error('Failed to load draws'); }
 
     try {
-      const charRes = await axios.get($);
+      const charRes = await axios.get(`${BASE_URL}/api/charity`);
       setCharities(charRes.data);
     } catch (e) { console.error('Failed to load charities'); }
   };
@@ -35,7 +36,11 @@ const Admin = () => {
   const handleRunDraw = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post($, { prize: prizeName }, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await axios.post(
+        `${BASE_URL}/api/draws/run`,
+        { prize: prizeName },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
       alert(`Draw successful! Winner: ${res.data.draw.winner.name}`);
       setPrizeName('');
       fetchData();
@@ -79,7 +84,7 @@ const Admin = () => {
           <h3 className="mb-4">Charity Contributions</h3>
           {charities.length === 0 ? (
             <button onClick={async () => {
-              await axios.post($);
+              await axios.post(`${BASE_URL}/api/charity/seed`);
               fetchData();
             }} className="btn btn-secondary mt-2">Seed Initial Charities</button>
           ) : (
